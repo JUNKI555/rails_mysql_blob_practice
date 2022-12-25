@@ -13,7 +13,7 @@
 <p>
   <strong>Binary:</strong>
 
-  <% if @image.content_type.include?("pdf") %>
+  <% if Image::PDF_CONTENT_TYPES.include?(@image.content_type) %>
     <object
       type="application/pdf"
       data="/images/file/<%= @image.id %>"

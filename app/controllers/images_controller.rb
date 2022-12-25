@@ -28,7 +28,6 @@ class ImagesController < ApplicationController
 
   # POST /images or /images.json
   def create
-    binding.pry
     @image = Image.new(
       user_id: image_params[:user_id],
       file_name: image_params[:file_name],

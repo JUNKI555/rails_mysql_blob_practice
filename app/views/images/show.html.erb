@@ -12,7 +12,26 @@
 
 <p>
   <strong>Binary:</strong>
-  <%= ("<img src=\"data:#{@image.content_type};base64,%s\">" % Base64.encode64(@image.binary)).html_safe %>
+
+  <% if @image.content_type.include?("pdf") %>
+    <object
+      type="application/pdf"
+      data="/images/file/<%= @image.id %>"
+      width="800px"
+      height="400px"></object>
+    <br>
+    <br>
+    <%# Google Drive PDF Viewerはlocalhostでは動かない %>
+    <% if false %>
+      <embed width="800" height="400" src="https://drive.google.com/viewerng/viewer?embedded=true&url=http://localhost:3000/images/file/<%= @image.id %>" />
+    <% end %>
+  <% else %>
+    <%# 雑にbase64で表示の書き方、一応残す %>
+    <% if false %>
+      <%= ("<img src=\"data:#{@image.content_type};base64,%s\">" % Base64.encode64(@image.binary)).html_safe %>
+    <% end %>
+    <img src="/images/file/<%= @image.id %>" />
+  <% end %>
 </p>
 
 <%= link_to 'Edit', edit_image_path(@image) %> |

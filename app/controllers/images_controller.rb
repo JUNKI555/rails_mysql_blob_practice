@@ -10,6 +10,13 @@ class ImagesController < ApplicationController
   def show
   end
 
+  def file
+    permit_parameters = params.permit(:id).to_h
+    image = Image.find(permit_parameters[:id].to_i)
+
+    send_data(image.binary, :type => image.content_type, :disposition => 'inline')
+  end
+
   # GET /images/new
   def new
     @image = Image.new

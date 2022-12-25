@@ -14,10 +14,12 @@ ActiveRecord::Schema.define(version: 2022_12_23_143442) do
 
   create_table "images", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "file_name"
-    t.binary "binary", size: :long
+    t.string "file_name", null: false
+    t.string "content_type", null: false
+    t.binary "binary", size: :long, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "file_name"], name: "index_images_on_user_id_and_file_name", unique: true
     t.index ["user_id"], name: "index_images_on_user_id"
   end
 

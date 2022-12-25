@@ -12,7 +12,7 @@
 
 <p>
   <strong>Binary:</strong>
-  <%= @image.binary %>
+  <%= ("<img src=\"data:#{@image.content_type};base64,%s\">" % Base64.encode64(@image.binary)).html_safe %>
 </p>
 
 <%= link_to 'Edit', edit_image_path(@image) %> |

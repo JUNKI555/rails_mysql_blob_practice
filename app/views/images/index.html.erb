@@ -17,7 +17,13 @@
       <tr>
         <td><%= image.user_id %></td>
         <td><%= image.file_name %></td>
-        <td><%= image.binary %></td>
+        <td>
+          <% if image.content_type.include?("pdf") %>
+            pdf
+          <% else %>
+            <%= ("<img src=\"data:#{image.content_type};base64,%s\">" % Base64.encode64(image.binary)).html_safe %>
+          <% end %>
+        </td>
         <td><%= link_to 'Show', image %></td>
         <td><%= link_to 'Edit', edit_image_path(image) %></td>
         <td><%= link_to 'Destroy', image, method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -21,7 +21,13 @@ class ImagesController < ApplicationController
 
   # POST /images or /images.json
   def create
-    @image = Image.new(image_params)
+    binding.pry
+    @image = Image.new(
+      user_id: image_params[:user_id],
+      file_name: image_params[:file_name],
+      content_type: image_params[:binary].content_type,
+      binary: image_params[:binary].read,
+    )
 
     respond_to do |format|
       if @image.save

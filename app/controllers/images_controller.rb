@@ -10,6 +10,7 @@ class ImagesController < ApplicationController
   def show
   end
 
+  # GET /images/file/1
   def file
     permit_parameters = params.permit(:id).to_h
     image = Image.find(permit_parameters[:id].to_i)

@@ -1,0 +1,204 @@
+<h1>AsyncImages#new</h1>
+<p>Find me in app/views/async_images/new.html.erb</p>
+
+<div>
+  <div class="field">
+    <label>user_id: <input type="text" id="user_id" required></label>
+  </div>
+  <div class="field">
+    <label>file_name: <input type="text" id="file_name" required></label>
+  </div>
+  <div class="field">
+    <label>image file: <input type="file" id="file_image" accept="image/*" onchange="selectImage(this)"></label>
+    <br>upload size: <span id="size_image"></span>
+  </div>
+  <div class="field">
+    <label>pdf file: <input type="file" id="file_pdf" accept="application/pdf" onchange="selectPdf(this)"></label>
+    <br>upload size: <span id="size_pdf"></span>
+  </div>
+  <br><br>
+  <div class="actions">
+    <button type="button" onclick="postCreateImage()">image create</button>
+  </div>
+  <div class="actions">
+    <button type="button" onclick="postCreatePdf()">pdf create</button>
+  </div>
+  <div>
+    image preview: <br>
+    <canvas id="canvas_preview" width="0" height="0"></canvas>
+  </div>
+</div>
+
+<script>
+const MAX_WIDTH = 1280;
+const MAX_HEIGHT = 800;
+let uploadImage = null;
+
+async function selectImage(thisElement) {
+  const files = thisElement.files;
+  if (!files) return;
+  if (files.length < 1) return;
+
+  const originalImage = files[0];
+  updateFileName(originalImage.name);
+  // console.log('originalImage', originalImage);
+  const reader = new FileReader();
+  reader.readAsDataURL(originalImage);
+  await new Promise(resolve => reader.onload = () => resolve());
+
+  const img = new Image();
+  img.src = reader.result;
+  await new Promise(resolve => img.onload = () => resolve());
+  let width = img.width;
+  let height = img.height;
+  if(width > height){
+    if (width > MAX_WIDTH) {
+      width = MAX_WIDTH;
+      height = Math.round( MAX_WIDTH * (img.height / img.width) );
+    }
+  } else {
+    if (height > MAX_HEIGHT) {
+      width = Math.round( MAX_HEIGHT * (img.width / img.height) );
+      height = MAX_HEIGHT;
+    }
+  }
+
+  const canvas = document.getElementById("canvas_preview");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d");
+  context.clearRect(0, 0, width, height);
+  context.drawImage(img, 0, 0, width, height);
+  context.canvas.toBlob((blob) => {
+    uploadImage = new File([blob], originalImage.name, {
+      type: originalImage.type,
+      lastModified: Date.now()
+    });
+    console.log('uploadImage', uploadImage);
+    calcSizeImage();
+  }, originalImage.type, 0.80);
+}
+
+function calcSizeImage() {
+  if (!uploadImage) return;
+
+  let sizeText = "";
+  if (Math.round(uploadImage.size / 1000000000) > 0) {
+    sizeText = "大きすぎます";
+  } else if (Math.round(uploadImage.size / 1000000) > 0) {
+    sizeText = `約&nbsp;${(uploadImage.size / 1000000).toFixed(1)}&nbsp;MB`;
+  } else if (Math.round(uploadImage.size / 1000) > 0) {
+    sizeText = `約&nbsp;${(uploadImage.size / 1000).toFixed(1)}&nbsp;KB`;
+  } else {
+    sizeText = `約&nbsp;${uploadImage.size.toFixed(1)}&nbsp;Byte`;
+  }
+
+  const sizeImage = document.getElementById("size_image");
+  sizeImage.innerHTML = sizeText;
+}
+
+function selectPdf(thisElement) {
+  const files = thisElement.files;
+  if (!files) return;
+  if (files.length < 1) return;
+
+  const pdf = files[0];
+  updateFileName(pdf.name);
+
+  calcSizePdf(pdf);
+}
+
+function calcSizePdf(pdf) {
+  if (!pdf) return;
+
+  let sizeText = "";
+  if (Math.round(pdf.size / 1000000000) > 0) {
+    sizeText = "大きすぎます";
+  } else if (Math.round(pdf.size / 1000000) > 0) {
+    sizeText = `約&nbsp;${(pdf.size / 1000000).toFixed(1)}&nbsp;MB`;
+  } else if (Math.round(pdf.size / 1000) > 0) {
+    sizeText = `約&nbsp;${(pdf.size / 1000).toFixed(1)}&nbsp;KB`;
+  } else {
+    sizeText = `約&nbsp;${pdf.size.toFixed(1)}&nbsp;Byte`;
+  }
+
+  const sizePdf = document.getElementById("size_pdf");
+  sizePdf.innerHTML = sizeText;
+}
+
+function updateFileName(fileName) {
+  document.getElementById("file_name").value = fileName;
+}
+
+function postCreateImage() {
+  if (!uploadImage) {
+    window.alert("ファイルを選択して下さい");
+    return;
+  }
+
+  postCreate(uploadImage);
+}
+
+function postCreatePdf() {
+  const files = document.getElementById("file_pdf").files;
+  if (!files || files.length < 1) {
+    window.alert("ファイルを選択して下さい");
+    return;
+  }
+
+  const pdf = files[0];
+  postCreate(pdf);
+}
+
+function postCreate(uploadFile) {
+  const userId = document.getElementById("user_id").value;
+  if (!userId) {
+    window.alert("user_idを入力して下さい");
+  }
+
+  const fileName = document.getElementById("file_name").value;
+  if (!fileName) {
+    window.alert("file_nameを入力して下さい");
+  }
+
+  const formData = new FormData();
+  formData.append("user_id", userId);
+  formData.append("file_name", fileName);
+  formData.append("binary", uploadFile);
+
+  fetch('/async_images/create', {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: {
+      'X-CSRF-Token': getCsrfToken()
+    },
+    body: formData,
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network Response Error, HTTP ' + response.status + ', ' + response.statusText);
+    }
+    return response.json();
+  })
+  .then(returnJson => {
+    location.href =  `/images/${returnJson.image_id}`;
+  })
+  .catch(error => {
+    console.error('There has been a problem with your fetch operation:', error);
+    window.alert(error.message);
+  });
+}
+
+// -------------------------------------------
+// csrf-token の取得
+// -------------------------------------------
+const getCsrfToken = () => {
+  const metas = document.getElementsByTagName("meta");
+  for (let meta of metas) {
+    if (meta.getAttribute("name") === "csrf-token") {
+      return meta.getAttribute("content");
+    }
+  }
+  return "";
+}
+</script>

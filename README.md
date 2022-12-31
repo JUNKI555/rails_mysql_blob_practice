@@ -1,24 +1,7 @@
-# README
+# Rails MySQL Blob Practice
+Rails6.1.3 x MySQL8.0 で blob型のカラムに画像やPDFを保存する練習
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## info
+- MySQL8.0 で blob型のカラム
+- ERB の `form_with` でバイナリファイルをアップロード
+- Fetch API を使ってバイナリファイルをアップロード

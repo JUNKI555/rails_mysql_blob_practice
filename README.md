@@ -15,5 +15,11 @@ Rails6.1.3 x MySQL8.0 で blob型のカラムに画像やPDFを保存する練�
   - https://qiita.com/k6i/items/d2c72394a490293277cc
 - Rails の binary型 を MySQL で使用した際のトラブルシューティング | Qiita
   - https://qiita.com/hnyssh/items/ef424ad0803c6052805a
--  MYSQL TINYBLOB vs LONGBLOB | Stack Overflow
+- MYSQL TINYBLOB vs LONGBLOB | Stack Overflow
   - https://stackoverflow.com/questions/8946224/mysql-tinyblob-vs-longblob
+- 全デバイス・全ブラウザで PDF を読みたい | Kaizen Platform 開発者ブログ
+  - https://developer.kaizenplatform.com/entry/2021/07/19/090000
+- 3.6 名前付きルーティング | Rails のルーティング | Rails ガイド
+  - https://railsguides.jp/routing.html#%E5%90%8D%E5%89%8D%E4%BB%98%E3%81%8D%E3%83%AB%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0
+- MySQL :: MySQL 8.0 Reference Manual :: 11.3.4 The BLOB and TEXT Types
+  - https://dev.mysql.com/doc/refman/8.0/en/blob.html

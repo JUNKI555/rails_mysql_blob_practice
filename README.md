@@ -33,3 +33,11 @@ Rails6.1.3 x MySQL8.0 で blob型のカラムに画像やPDFを保存する練�
   - https://kossy-web-engineer.hatenablog.com/entry/2019/06/26/211720
 - send_data | Railsドキュメント
   - https://railsdoc.com/page/send_data
+- Rails: displaying an image from a blob field in a database | Stack Overflow
+  - https://stackoverflow.com/questions/4294427/rails-displaying-an-image-from-a-blob-field-in-a-database
+- Rails 6 Displaying a BLOB column as an image in a view | Stack Overflow
+  - https://stackoverflow.com/questions/65414989/rails-6-displaying-a-blob-column-as-an-image-in-a-view
+- Providing the Object tag with data directly | Stack Overflow
+  - https://stackoverflow.com/questions/43234936/providing-the-object-tag-with-data-directly
+- 画像をBase64でHTMLファイルに直接埋め込む方法 | design Edge
+  - https://edge.sincar.jp/web/base64-inline-image/

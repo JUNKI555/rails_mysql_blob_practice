@@ -41,3 +41,7 @@ Rails6.1.3 x MySQL8.0 で blob型のカラムに画像やPDFを保存する練�
   - https://stackoverflow.com/questions/43234936/providing-the-object-tag-with-data-directly
 - 画像をBase64でHTMLファイルに直接埋め込む方法 | design Edge
   - https://edge.sincar.jp/web/base64-inline-image/
+- 【Rails】複数のカラムを使ったユニーク制約の方法【uniqueness: scope】 | なえのメモ帳
+  - https://310nae.com/rails-uniqueness/
+- 【Ruby On Rails】DBに一意性を与えるユニーク制約（unique）の正しい記述場所 | Qiita
+  - https://qiita.com/NedzumiNeko/items/bf8ad819fdbf087da947
